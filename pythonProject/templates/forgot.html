@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div class="hero">
+    <h2>Forgot Password</h2>
+<form method="POST">
+  <input type="text" name="username" placeholder="Your username" required><br>
+  <input type="password" name="new_password" placeholder="New password" required><br>
+  <button type="submit">Reset Password</button>
+</form>
+<div>
+  <a href="{{ url_for('register') }}">Create an account</a>
+<a href="{{ url_for('login') }}">Back to Login</a>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+<style>
+body{box-sizing: border-box;
+    margin: 0 auto;
+    padding: 0 auto;
+    background: linear-gradient(45deg, #3bd11d, #e08a27, #d11d3b, #3b6ed1);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+}
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.hero{min-height: 45vh;
+    max-height: 100%;
+    max-width: 620px;
+    width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+    padding: 30px;
+    border-radius: 10px solid;
+    background: linear-gradient( 50deg, 226, 164, 164);
+
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+}
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+
+    
+}
+h2{color: rgb(255, 255, 255);
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;}
+
+.hero a{color: rgb(255, 255, 255);}
+.hero input{border-radius: 5px;
+    background-color: aqua;
+
+}
+.hero input[type="text"],
+.hero input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+}
+.hero button {
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(80, 255, 27);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+.hero button:hover {
+    
+    background-color: rgb(12, 19, 117);
+color: white;
+}
+
+
+</style>
+
+    
+</body>
+</html>
+
+
+

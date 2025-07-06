@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+    <title>Send me an anonymous message</title>
+</head>
+<div>
+<ul>
+    <li><a href="{{ url_for('inbox') }}">📥 Go to Inbox</a></li>
+  
+</ul>
+</div>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        ul{color: rgb(255, 255, 255);
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            font-size: 20px;
+            margin-left: 25px;
+            justify-content: space-between;
+        }
+        .log {color: rgb(255, 255, 255);
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 20px;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            background-size: 400% 400%;
+            padding: 20px;
+            animation: gradientShift 15s ease infinite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .card {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .form-container {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(20, 15, 15, 0.85);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+        }
+
+        .preview-container {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        textarea {
+            height: 120px;
+            resize: none;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #ff7e5f;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .theme-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .theme-option {
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-option.active {
+            border-color: #ff7e5f;
+            background: rgba(255, 126, 95, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 126, 95, 0.4);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 126, 95, 0.6);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .preview-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -1;
+        }
+
+        .preview-content {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .preview-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .preview-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .preview-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .preview-username {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .preview-message {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .preview-footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-default .preview-background {
+            background: linear-gradient(135deg, #8E2DE2, #4A00E0, #8E2DE2);
+        }
+
+        .theme-birthday .preview-background {
+            background: linear-gradient(135deg, #ff6b6b, #ffa8a8, #ff6b6b);
+        }
+
+        .theme-christmas .preview-background {
+            background: linear-gradient(135deg, #e52d27, #b31217, #e52d27);
+        }
+
+        .theme-newyear .preview-background {
+            background: linear-gradient(135deg, #0072ff, #00c6ff, #0072ff);
+        }
+
+        .theme-anniversary .preview-background {
+            background: linear-gradient(135deg, #ff5e62, #ff9966, #ff5e62);
+        }
+
+        .theme-valentine .preview-background {
+            background: linear-gradient(135deg, #ff0844, #ffb199, #ff0844);
+        }
+
+        .success-message {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid rgba(46, 204, 113, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .theme-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Seasonal Greeting Cards</h1>
+            <p class="subtitle">Create beautiful animated greeting cards for any occasion and send them to your loved ones</p>
+        </header>
+        
+        <div class="card">
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="recipient">Recipient Username</label>
+                    <input type="text" id="recipient" placeholder="Enter username (e.g., @Austin)">
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" placeholder="Type your seasonal greeting here..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Select Occasion</label>
+                    <div class="theme-options">
+                        <div class="theme-option active" data-theme="default">
+                            <i class="fas fa-star"></i>
+                            <div>Default</div>
+                        </div>
+                        <div class="theme-option" data-theme="birthday">
+                            <i class="fas fa-birthday-cake"></i>
+                            <div>Birthday</div>
+                        </div>
+                        <div class="theme-option" data-theme="christmas">
+                            <i class="fas fa-tree"></i>
+                            <div>Christmas</div>
+                        </div>
+                        <div class="theme-option" data-theme="newyear">
+                            <i class="fas fa-glass-cheers"></i>
+                            <div>New Year</div>
+                        </div>
+                        <div class="theme-option" data-theme="anniversary">
+                            <i class="fas fa-heart"></i>
+                            <div>Anniversary</div>
+                        </div>
+                        <div class="theme-option" data-theme="valentine">
+                            <i class="fas fa-heartbeat"></i>
+                            <div>Valentine</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="sendBtn">
+                    <i class="fas fa-paper-plane"></i> Send Greeting
+                </button>
+                
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i> Your greeting has been sent to <span id="sentTo"></span> successfully!
+                </div>
+            </div>
+            
+            <div class="preview-container theme-default">
+                <div class="preview-background"></div>
+                <div class="preview-content">
+                    <div class="preview-header">
+                        <div class="preview-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h2 class="preview-title">Season's Greetings</h2>
+                        <div class="preview-username">To: <span id="previewRecipient">@username</span></div>
+                    </div>
+                    
+                    <div class="preview-message">
+                        <p id="previewMessage">Your personalized message will appear here...</p>
+                    </div>
+                    
+                    <div class="preview-footer">
+                        Sent with ❤️ from Seasonal Greetings App
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="log">
+       <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+    <!-- Include JavaScript -->
+       <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+       <script>
+           document.addEventListener('DOMContentLoaded', function() {
+               const sendBtn = document.getElementById('sendBtn');
+               const recipientInput = document.getElementById('recipient');
+            const messageInput = document.getElementById('message');
+            const previewRecipient = document.getElementById('previewRecipient');
+            const previewMessage = document.getElementById('previewMessage');
+            const successMessage = document.getElementById('successMessage');
+            const sentTo = document.getElementById('sentTo');
+        });
+    </script>
+
+</body>
+</html>
